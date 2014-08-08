@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding/.classpath=US-ASCII
+encoding//.settings/org.eclipse.core.resources.prefs=US-ASCII
+encoding//.settings/org.eclipse.jdt.core.prefs=US-ASCII
+encoding//.settings/org.eclipse.xtend.shared.ui.prefs=US-ASCII
+encoding//META-INF/MANIFEST.MF=US-ASCII
+encoding//src/net/speedpat/sct/generator/boost/BoostGeneratorDefaultValueProvider.java=US-ASCII
+encoding//src/net/speedpat/sct/generator/boost/IFeatureConstants.java=US-ASCII
+encoding/<project>=UTF-8
+encoding/build.properties=US-ASCII
+encoding/plugin.xml=US-ASCII

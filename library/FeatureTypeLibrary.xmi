@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sgen:FeatureTypeLibrary
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:sgen="http://www.yakindu.org/sct/statechart/SGen"
+    name="Boost.MSM Generator">
+  <types name="generate">
+    <parameters
+        name="cppnamespace"/>
+  </types>
+</sgen:FeatureTypeLibrary>

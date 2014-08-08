@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.yakindu.sct.generator.core.generator">
+      <SCTGenerator
+      		class="net.speedpat.sct.generator.boost.BoostCodeGenerator"
+      		contentType="statechart"
+            description="Boost.MSM Generator"
+            elementRefType="org.yakindu.sct.model.sgraph.Statechart"
+            icon="icons/sct.png"
+            id="custom::boostGenerator"
+            name="Boost.MSM Generator">
+         <FeatureLibrary
+               library_id="org.yakindu.generator.core.features">
+         </FeatureLibrary>
+         <FeatureLibrary
+               library_id="org.yakindu.generator.core.features.sctbase">
+         </FeatureLibrary>
+         <FeatureLibrary
+               library_id="net.speedpat.sct.generator.feature.boost">
+         </FeatureLibrary>
+      </SCTGenerator>
+   </extension>
+      <extension
+         point="org.yakindu.sct.generator.core.extensions">
+      <ExtensionGeneratorMapping
+            fileExtension="sct"
+            generatorId="custom::boostGenerator">
+      </ExtensionGeneratorMapping>
+   </extension>
+<extension
+      point="org.yakindu.sct.generator.core.featuretypes">
+   <FeatureLibrary
+   	library_id="net.speedpat.sct.generator.feature.boost"
+   	defaultProvider="net.speedpat.sct.generator.boost.BoostGeneratorDefaultValueProvider"
+   	uri="platform:/plugin/net.speedpat.sct.generator.boost/library/FeatureTypeLibrary.xmi">
+   </FeatureLibrary>
+</extension>
+</plugin>

@@ -2,6 +2,7 @@ package net.speedpat.sct.generator.boost
 
 import com.google.inject.Inject
 import org.eclipse.xtext.generator.IFileSystemAccess
+import org.yakindu.base.types.Parameter
 import org.yakindu.sct.generator.core.impl.SimpleResourceFileSystemAccess
 import org.yakindu.sct.model.sexec.ExecutionFlow
 import org.yakindu.sct.model.sexec.naming.INamingService
@@ -48,7 +49,7 @@ class StatemachineInterface {
 			«ENDFOR»
 		};
 		
-		«name.asIdentifier»* createStatemachine(Handler* handler);
+		«name.asIdentifier»* createStatemachine(«handlerInterfaceTypes»);
 		
 		} /* namespace «entry.cppNamespace» */
 			
@@ -60,14 +61,10 @@ class StatemachineInterface {
 			InterfaceScope: scope.handlerInterface
 		}
 	}
+	
 
-	def operations(Scope it) {
-		declarations.filter(typeof(OperationDefinition));
-	}
 
-	def hasOperations(Scope it) {
-		!operations.isEmpty;
-	}
+
 
 	def handlerInterface(InterfaceScope it) '''
 		class «name.asIdentifier» {
@@ -79,11 +76,7 @@ class StatemachineInterface {
 		};
 	'''
 
-	def parameterList(OperationDefinition it) '''
-		«FOR it : parameters SEPARATOR ', '»
-			«operationParams»
-		«ENDFOR»
-	'''
+
 
 	def eventVirtualMethod(Scope scope) {
 		switch (scope) {

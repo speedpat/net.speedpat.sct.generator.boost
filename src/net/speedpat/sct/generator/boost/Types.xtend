@@ -18,12 +18,10 @@ class Types {
 
 		if (fsa instanceof SimpleResourceFileSystemAccess) {
 
+			fsa.generateFile(flow.baseStateModule.h.filename, flow.baseStateHContent(entry))
+			
 			if (!exists(flow.typesModule.h, fsa as SimpleResourceFileSystemAccess)) {
 				fsa.generateFile(flow.typesModule.h.filename, flow.typesHContent(entry))
-			}
-
-			if (!exists(flow.baseStateModule.h, fsa as SimpleResourceFileSystemAccess)) {
-				fsa.generateFile(flow.baseStateModule.h.filename, flow.baseStateHContent(entry))
 			}
 
 			if (!exists(flow.debugTypeModule.h, fsa as SimpleResourceFileSystemAccess)) {

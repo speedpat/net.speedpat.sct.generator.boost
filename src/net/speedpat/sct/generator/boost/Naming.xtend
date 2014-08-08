@@ -19,13 +19,17 @@ class Naming extends org.yakindu.sct.generator.cpp.Naming {
 	def eventsModule(ExecutionFlow it) {
 		name + '_events'
 	}
-	
+
 	def statesModule(ExecutionFlow it) {
 		name + '_states'
 	}
-	
+
 	def statemachineInterfaceModule(ExecutionFlow it) {
 		name + '_statemachine_interface'
+	}
+
+	def statemachineHeaderModule(ExecutionFlow it) {
+		name + '_statemachine'
 	}
 
 	def eventsModule(Scope it) {
@@ -33,20 +37,23 @@ class Naming extends org.yakindu.sct.generator.cpp.Naming {
 			InterfaceScope: eventsModule
 		}
 	}
-	
+
 	def filename(String it) {
 		it.toLowerCase
 	}
-	
+
 	override h(String it) {
 		it + ".hpp"
 	}
-	
+
 	def baseStateModule(ExecutionFlow it) {
 		'base_state'
 	}
-	
-	
+
+	def statemachineLogic(ExecutionFlow it) {
+		name.asIdentifier + "Logic"
+	}
+
 	def debugTypeModule(ExecutionFlow it) {
 		'debug_type'
 	}
@@ -61,12 +68,15 @@ class Naming extends org.yakindu.sct.generator.cpp.Naming {
 		else
 			''
 	}
-	
-	def operationParams(Parameter it) {
-		type.targetLanguageName + ' ' + name
-	}
-	
+
 	def stateName(String it) {
 		asIdentifier
+	}
+
+	def handlerInterfaceMemberName(InterfaceScope it) '''
+	m_«name.toFirstUpper.asIdentifier»'''
+
+	def operationParams(Parameter it) {
+		type.targetLanguageName + ' ' + name
 	}
 }

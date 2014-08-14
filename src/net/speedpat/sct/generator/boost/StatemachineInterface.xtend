@@ -2,23 +2,17 @@ package net.speedpat.sct.generator.boost
 
 import com.google.inject.Inject
 import org.eclipse.xtext.generator.IFileSystemAccess
-import org.yakindu.base.types.Parameter
 import org.yakindu.sct.generator.core.impl.SimpleResourceFileSystemAccess
 import org.yakindu.sct.model.sexec.ExecutionFlow
-import org.yakindu.sct.model.sexec.naming.INamingService
 import org.yakindu.sct.model.sgen.GeneratorEntry
-import org.yakindu.sct.model.sgraph.Event
 import org.yakindu.sct.model.sgraph.Scope
 import org.yakindu.sct.model.sgraph.Statechart
 import org.yakindu.sct.model.stext.stext.InterfaceScope
-import org.yakindu.sct.model.stext.stext.OperationDefinition
-import org.yakindu.sct.generator.cpp.Navigation
 
 class StatemachineInterface {
 	@Inject extension Naming
 	@Inject extension GenmodelEntries
-	@Inject extension INamingService
-	@Inject extension Navigation
+	@Inject extension FlowCode
 
 	def generateStatemachineInterfaceHpp(ExecutionFlow flow, Statechart sc, IFileSystemAccess fsa, GeneratorEntry entry) {
 		if (fsa instanceof SimpleResourceFileSystemAccess) {
@@ -74,19 +68,4 @@ class StatemachineInterface {
 			
 		} /* «entry.cppNamespace» */
 	'''
-	
-	def handlerInterface(InterfaceScope it) '''
-		class «handlerInterfaceTypeName» {
-		public:
-			virtual ~«handlerInterfaceTypeName»();
-			«FOR OperationDefinition it : it.operations»
-				virtual void «name»(«parameterList») = 0;
-			«ENDFOR»
-		};
-	'''
-
-
-
-
-
 }

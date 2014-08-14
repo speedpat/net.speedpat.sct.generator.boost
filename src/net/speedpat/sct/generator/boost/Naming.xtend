@@ -11,7 +11,6 @@ import org.yakindu.sct.model.sgraph.Event
 import org.yakindu.sct.model.sgraph.Scope
 import org.yakindu.sct.model.stext.stext.EventDefinition
 import org.yakindu.sct.model.stext.stext.InterfaceScope
-import org.yakindu.sct.model.stext.stext.OperationDefinition
 
 class Naming extends org.yakindu.sct.generator.cpp.Naming {
 

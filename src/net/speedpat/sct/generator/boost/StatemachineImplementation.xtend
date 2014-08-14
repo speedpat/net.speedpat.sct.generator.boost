@@ -5,7 +5,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.yakindu.sct.generator.core.impl.SimpleResourceFileSystemAccess
 import org.yakindu.sct.generator.cpp.Navigation
 import org.yakindu.sct.model.sexec.ExecutionFlow
-import org.yakindu.sct.model.sexec.naming.INamingService
 import org.yakindu.sct.model.sgen.GeneratorEntry
 import org.yakindu.sct.model.sgraph.Event
 import org.yakindu.sct.model.sgraph.Statechart
@@ -16,7 +15,6 @@ import org.yakindu.sct.model.stext.stext.OperationDefinition
 class StatemachineImplementation {
 	@Inject extension Naming
 	@Inject extension GenmodelEntries
-	@Inject extension INamingService
 	@Inject extension Navigation
 	@Inject extension FlowCode
 	@Inject extension Transitions

@@ -6,6 +6,7 @@ import static net.speedpat.sct.generator.boost.IFeatureConstants.LIBRARY_NAME;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
+import org.yakindu.sct.generator.c.features.CFeatureConstants;
 import org.yakindu.sct.generator.core.features.AbstractDefaultFeatureValueProvider;
 import org.yakindu.sct.model.sgen.FeatureParameterValue;
 import org.yakindu.sct.model.sgen.FeatureTypeLibrary;
@@ -15,6 +16,7 @@ import org.yakindu.sct.model.sgen.FeatureTypeLibrary;
  */
 public class BoostGeneratorDefaultValueProvider extends AbstractDefaultFeatureValueProvider {
 
+	private static final String VALID_IDENTIFIER_REGEX = "[_a-zA-Z][_a-zA-Z0-9]*";
 
 	public boolean isProviderFor(FeatureTypeLibrary library) {
 		return library.getName().equals(LIBRARY_NAME);
@@ -29,11 +31,13 @@ public class BoostGeneratorDefaultValueProvider extends AbstractDefaultFeatureVa
 		}
 	}
 
-	public IStatus validateParameterValue(FeatureParameterValue parameterValue) {
-		String parameterName = parameterValue.getParameter().getName();
-		
-		// TODO implement validation
-		// return error("Illegal parameter value");
+	public IStatus validateParameterValue(FeatureParameterValue parameter) {
+		String parameterName = parameter.getParameter().getName();
+		if (CFeatureConstants.PARAMETER_MODULE_NAME.equals(parameterName)) {
+			if (!parameter.getStringValue().matches(VALID_IDENTIFIER_REGEX)) {
+				return error("Invalid module name");
+			}
+		}
 		return Status.OK_STATUS;
 	}
 }

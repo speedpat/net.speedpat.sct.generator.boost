@@ -1,28 +1,17 @@
 package net.speedpat.sct.generator.boost
 
 import com.google.inject.Inject
-import org.eclipse.emf.common.util.BasicEList
-import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.yakindu.sct.generator.core.impl.SimpleResourceFileSystemAccess
-import org.yakindu.sct.generator.cpp.Navigation
-import org.yakindu.sct.model.sexec.EnterState
 import org.yakindu.sct.model.sexec.ExecutionFlow
-import org.yakindu.sct.model.sexec.Sequence
-import org.yakindu.sct.model.sexec.Step
-import org.yakindu.sct.model.sexec.naming.INamingService
 import org.yakindu.sct.model.sgen.GeneratorEntry
 import org.yakindu.sct.model.sgraph.Scope
 import org.yakindu.sct.model.sgraph.Statechart
-import org.yakindu.sct.model.stext.stext.EventDefinition
 import org.yakindu.sct.model.stext.stext.InterfaceScope
-import org.yakindu.sct.model.stext.stext.OperationDefinition
 
 class StatemachineHeader {
 	@Inject extension Naming
 	@Inject extension GenmodelEntries
-	@Inject extension INamingService
-	@Inject extension Navigation
 	@Inject extension FlowCode
 	@Inject extension Transitions
 	
@@ -94,32 +83,12 @@ class StatemachineHeader {
 			virtual void enter();
 		};
 			
-	} /* namespace «entry.cppNamespace» */
+		} /* namespace «entry.cppNamespace» */
 			
-	#endif /* «statemachineInterfaceModule.define»_H_ */
-	'''
+		#endif /* «statemachineInterfaceModule.define»_H_ */
+		'''
 
-	def CharSequence enterStatesList(ExecutionFlow it) '''
-		«FOR it : enterSequences.defaultSequence.enterStates SEPARATOR ","»
-			«state.stateTypeQualifiedName»«ENDFOR»'''
-	
-	def dispatch EList<EnterState> enterStates(Sequence it) {
-		var list = new BasicEList<EnterState>();
-		for (it : it.steps)
-			list.addAll(it.enterStates)
-			
-		return list
-	}
-	
-	def dispatch EList<EnterState> enterStates(Step it) {
-		return new BasicEList<EnterState>();
-	}
-	
-	def dispatch EList<EnterState> enterStates(EnterState it) {
-		 var list = new BasicEList<EnterState>();
-		 list.add(it)
-		 return list
-	}
+
 	
 	def transitionTable(ExecutionFlow it) {
 		
@@ -133,25 +102,11 @@ class StatemachineHeader {
 			// Transition table
 			struct transition_table: boost::mpl::vector<
 			«FOR it: table SEPARATOR ","»
-				«row»<«sourceState.stateTypeQualifiedName», «event.eventTypeQualifiedName», «targetState.stateTypeQualifiedName» «action?.row»>
+				«transition»
 			«ENDFOR»
 			> {};
 		'''
 	}
-	
-	def hasAction(Transitions.TransitionTableEntry it) {
-		action != null
-	} 
-	
-	def row(Transitions.TransitionTableEntry it) '''
-		«IF hasAction»a_row«ELSE»_row«ENDIF»'''
-	
-	def CharSequence row(OperationDefinition it) {
-		", &" + it.flow.statemachineLogic + "::" + it.asFunction
-	}
-	
-	def declaration(OperationDefinition it, EventDefinition event) '''
-		virtual void «asFunction»(const «event.eventTypeQualifiedName»&);
-	'''
+
 	
 }

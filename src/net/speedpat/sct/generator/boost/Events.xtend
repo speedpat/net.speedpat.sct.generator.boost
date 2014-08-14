@@ -6,16 +6,13 @@ import org.yakindu.sct.generator.core.impl.SimpleResourceFileSystemAccess
 import org.yakindu.sct.model.sexec.ExecutionFlow
 import org.yakindu.sct.model.sgen.GeneratorEntry
 import org.yakindu.sct.model.sgraph.Event
-import org.yakindu.sct.model.sgraph.Scope
 import org.yakindu.sct.model.sgraph.Statechart
 import org.yakindu.sct.model.stext.stext.EventDefinition
 import org.yakindu.sct.model.stext.stext.InterfaceScope
-import org.yakindu.sct.model.sexec.naming.INamingService
 
 class Events {
 
 	@Inject extension Naming
-	@Inject extension INamingService
 	@Inject extension GenmodelEntries
 
 	def generateEventsHpp(ExecutionFlow flow, Statechart sc, IFileSystemAccess fsa, GeneratorEntry entry) {

@@ -5,14 +5,13 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.yakindu.sct.generator.core.impl.SimpleResourceFileSystemAccess
 import org.yakindu.sct.model.sexec.ExecutionFlow
 import org.yakindu.sct.model.sexec.ExecutionRegion
-import org.yakindu.sct.model.sexec.naming.INamingService
 import org.yakindu.sct.model.sgen.GeneratorEntry
 import org.yakindu.sct.model.sgraph.Statechart
 
 class States {
 	@Inject extension Naming
 	@Inject extension GenmodelEntries
-	@Inject extension INamingService
+	@Inject extension FlowCode
 
 	def generateStatesHpp(ExecutionFlow flow, Statechart sc, IFileSystemAccess fsa, GeneratorEntry entry) {
 		flow.generateStatesHpp(fsa, entry)

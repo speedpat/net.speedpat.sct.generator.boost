@@ -25,7 +25,6 @@ public class BoostCodeGenerator extends CppCodeGenerator {
 		if (isDumpSexec(entry)) {
 			dumpSexec(entry, flow);
 		}
-		System.out.println("foooooooooooooooooo");
 		delegate.generate(flow, entry, getFileSystemAccess(entry));
 	}
 

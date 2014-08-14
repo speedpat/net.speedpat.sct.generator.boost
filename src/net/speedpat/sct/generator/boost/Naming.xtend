@@ -1,14 +1,17 @@
 package net.speedpat.sct.generator.boost
 
 import com.google.inject.Inject
+import org.yakindu.base.types.Parameter
 import org.yakindu.sct.generator.core.types.ICodegenTypeSystemAccess
 import org.yakindu.sct.generator.cpp.Navigation
 import org.yakindu.sct.model.sexec.ExecutionFlow
+import org.yakindu.sct.model.sexec.ExecutionState
+import org.yakindu.sct.model.sexec.naming.INamingService
+import org.yakindu.sct.model.sgraph.Event
 import org.yakindu.sct.model.sgraph.Scope
 import org.yakindu.sct.model.stext.stext.EventDefinition
 import org.yakindu.sct.model.stext.stext.InterfaceScope
-import org.yakindu.sct.model.sexec.naming.INamingService
-import org.yakindu.base.types.Parameter
+import org.yakindu.sct.model.stext.stext.OperationDefinition
 
 class Naming extends org.yakindu.sct.generator.cpp.Naming {
 
@@ -28,7 +31,7 @@ class Naming extends org.yakindu.sct.generator.cpp.Naming {
 		name + '_statemachine_interface'
 	}
 
-	def statemachineHeaderModule(ExecutionFlow it) {
+	def statemachineModule(ExecutionFlow it) {
 		name + '_statemachine'
 	}
 
@@ -49,10 +52,23 @@ class Naming extends org.yakindu.sct.generator.cpp.Naming {
 	def baseStateModule(ExecutionFlow it) {
 		'base_state'
 	}
+	
+	def statemachineName(ExecutionFlow it) {
+		name.asIdentifier.toFirstUpper
+	}
 
 	def statemachineLogic(ExecutionFlow it) {
-		name.asIdentifier + "Logic"
+		statemachineName + "Logic"
 	}
+	
+	def statemachineBackend(ExecutionFlow it) {
+		statemachineName + "Backend"
+	}
+	
+	def statemachineInterfaceName(ExecutionFlow it) {
+		"I" + statemachineName;
+	}
+	
 
 	def debugTypeModule(ExecutionFlow it) {
 		'debug_type'
@@ -79,4 +95,41 @@ class Naming extends org.yakindu.sct.generator.cpp.Naming {
 	def operationParams(Parameter it) {
 		type.targetLanguageName + ' ' + name
 	}
+	
+	def stateTypeName(ExecutionState it) {
+		shortName.stateName
+	}
+	
+	def stateTypeQualifiedName(ExecutionState it) {
+		it.superScope.name.asIdentifier + "::" + stateTypeName
+		
+	}
+	
+	def eventTypeQualifiedName(EventDefinition it) {
+		"events::" + it.scope?.scopeNamespaceQualifier + it.name.asIdentifier
+	}
+	
+	def eventTypeQualifiedName(Event it) {
+		"events::" + it.scope?.scopeNamespaceQualifier + it.name.asIdentifier
+	}
+	
+	def scopeNamespaceName(Scope it) {
+		scopeName.asIdentifier.toLowerCase
+	}
+	def scopeNamespaceQualifier(Scope it) {
+		scopeNamespaceName + "::"
+	}
+	
+	def dispatch scopeName(Scope s) {
+		""
+	}
+	
+	def dispatch scopeName(InterfaceScope s) {
+		s.name
+	}
+	
+	def asFunction(Event it) {
+		name.asIdentifier.toFirstLower	
+	}
+	 
 }

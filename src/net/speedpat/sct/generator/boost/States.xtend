@@ -4,13 +4,15 @@ import com.google.inject.Inject
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.yakindu.sct.generator.core.impl.SimpleResourceFileSystemAccess
 import org.yakindu.sct.model.sexec.ExecutionFlow
+import org.yakindu.sct.model.sexec.ExecutionRegion
+import org.yakindu.sct.model.sexec.naming.INamingService
 import org.yakindu.sct.model.sgen.GeneratorEntry
 import org.yakindu.sct.model.sgraph.Statechart
-import org.yakindu.sct.model.sexec.ExecutionState
 
 class States {
 	@Inject extension Naming
 	@Inject extension GenmodelEntries
+	@Inject extension INamingService
 
 	def generateStatesHpp(ExecutionFlow flow, Statechart sc, IFileSystemAccess fsa, GeneratorEntry entry) {
 		flow.generateStatesHpp(fsa, entry)
@@ -26,24 +28,19 @@ class States {
 		«entry.licenseText»
 		
 		#ifndef «statesModule.define»_H_
-		#define «eventsModule.define»_H_
+		#define «statesModule.define»_H_
 		
 		#include "«baseStateModule.h.filename»"
 		
 		namespace «entry.cppNamespace» {
-		
-		«FOR ExecutionState it : states»
-			«stateType»
+			
+		«FOR ExecutionRegion it : regions»
+			«stateTypes»
 		«ENDFOR»
 		
 		} /* namespace «entry.cppNamespace» */
 		
-		#endif /* «eventsModule.define»_H_ */
+		#endif /* «statesModule.define»_H_ */
 	'''
 
-	def stateType(ExecutionState it) {
-		'''
-			struct «name.stateName» : base_state<«name.stateName»> {};
-		'''
-	}
 }

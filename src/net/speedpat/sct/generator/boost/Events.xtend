@@ -9,26 +9,29 @@ import org.yakindu.sct.model.sgraph.Event
 import org.yakindu.sct.model.sgraph.Scope
 import org.yakindu.sct.model.sgraph.Statechart
 import org.yakindu.sct.model.stext.stext.EventDefinition
+import org.yakindu.sct.model.stext.stext.InterfaceScope
+import org.yakindu.sct.model.sexec.naming.INamingService
 
 class Events {
 
 	@Inject extension Naming
+	@Inject extension INamingService
 	@Inject extension GenmodelEntries
 
 	def generateEventsHpp(ExecutionFlow flow, Statechart sc, IFileSystemAccess fsa, GeneratorEntry entry) {
-		for (Scope scope : flow.scopes) {
+		for (InterfaceScope scope : flow.scopes.filter(typeof(InterfaceScope))) {
 			scope.generateEventsHpp(flow, fsa, entry)
 		}
 
 	}
 
-	def void generateEventsHpp(Scope scope, ExecutionFlow flow, IFileSystemAccess fsa, GeneratorEntry entry) {
+	def void generateEventsHpp(InterfaceScope scope, ExecutionFlow flow, IFileSystemAccess fsa, GeneratorEntry entry) {
 		if (fsa instanceof SimpleResourceFileSystemAccess) {
 			fsa.generateFile(scope.eventsModule.h.filename, scope.eventsHContent(flow, entry))
 		}
 	}
 
-	def eventsHContent(Scope it, ExecutionFlow flow, GeneratorEntry entry) '''
+	def eventsHContent(InterfaceScope it, ExecutionFlow flow, GeneratorEntry entry) '''
 		«entry.licenseText»
 		
 		#ifndef «eventsModule.define»_H_
@@ -38,10 +41,14 @@ class Events {
 		
 		namespace «entry.cppNamespace» {
 		
+		namespace events {
+		namespace «scopeNamespaceName» {
 		«FOR Event it : events»
 			«eventType»
 		«ENDFOR»
 		
+		} /* namespace «scopeNamespaceName» */
+		} /* namsepace events */
 		} /* namespace «entry.cppNamespace» */
 		
 		#endif /* «eventsModule.define»_H_ */

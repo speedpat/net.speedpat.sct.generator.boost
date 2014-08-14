@@ -12,15 +12,18 @@ import org.yakindu.sct.model.sgraph.Scope
 import org.yakindu.sct.model.sgraph.Statechart
 import org.yakindu.sct.model.stext.stext.InterfaceScope
 import org.yakindu.sct.model.stext.stext.OperationDefinition
+import org.yakindu.sct.generator.cpp.Navigation
 
 class StatemachineInterface {
 	@Inject extension Naming
 	@Inject extension GenmodelEntries
 	@Inject extension INamingService
+	@Inject extension Navigation
 
 	def generateStatemachineInterfaceHpp(ExecutionFlow flow, Statechart sc, IFileSystemAccess fsa, GeneratorEntry entry) {
 		if (fsa instanceof SimpleResourceFileSystemAccess) {
 			fsa.generateFile(flow.statemachineInterfaceModule.h.filename, flow.statemachineInterfaceHContents(entry))
+			fsa.generateFile(flow.statemachineInterfaceModule.cpp.filename, flow.statemachineInterfaceCppContents(entry))
 		}
 	}
 
@@ -36,40 +39,46 @@ class StatemachineInterface {
 		
 		namespace «entry.cppNamespace» {
 		
-		«FOR Scope it : scopes»
+		«FOR InterfaceScope it : interfaces»
 			«handlerInterface»
 		«ENDFOR»
 		
-		class «name.asIdentifier»{
+		class «statemachineInterfaceName»{
 		public:
-			virtual ~«name.asIdentifier»() {};
+			virtual ~«statemachineInterfaceName»() {};
 			virtual void enter() = 0;
-			«FOR Scope it : scopes»
-				«eventVirtualMethod»
+			«FOR InterfaceScope it : interfaces»
+				«eventPureVirtualMethods»
 			«ENDFOR»
 		};
 		
-		«name.asIdentifier»* createStatemachine(«handlerInterfaceTypes»);
+		«statemachineInterfaceName»* createStatemachine(«handlerInterfaceTypes»);
 		
 		} /* namespace «entry.cppNamespace» */
 			
 		#endif /* «statemachineInterfaceModule.define»_H_ */
 	'''
-
-	def handlerInterface(Scope scope) {
-		switch (scope) {
-			InterfaceScope: scope.handlerInterface
-		}
-	}
 	
-
-
-
-
+	def statemachineInterfaceCppContents(ExecutionFlow it, GeneratorEntry entry) '''
+		«entry.licenseText»
+		
+		#include "«statemachineInterfaceModule.h.filename»"
+		
+		namespace «entry.cppNamespace» {
+			
+		«FOR InterfaceScope it : interfaces»
+		«handlerInterfaceTypeName»::~«handlerInterfaceTypeName»()
+		{
+		}
+		«ENDFOR»
+			
+		} /* «entry.cppNamespace» */
+	'''
+	
 	def handlerInterface(InterfaceScope it) '''
-		class «name.asIdentifier» {
+		class «handlerInterfaceTypeName» {
 		public:
-			virtual ~«name.asIdentifier»();
+			virtual ~«handlerInterfaceTypeName»();
 			«FOR OperationDefinition it : it.operations»
 				virtual void «name»(«parameterList») = 0;
 			«ENDFOR»
@@ -78,20 +87,6 @@ class StatemachineInterface {
 
 
 
-	def eventVirtualMethod(Scope scope) {
-		switch (scope) {
-			InterfaceScope: scope.eventVirtualMethod
-		}
-	}
 
-	def eventVirtualMethod(InterfaceScope it) '''
-		«FOR Event it : events»
-			«eventVirtualMethod»
-		«ENDFOR»
-	'''
-
-	def eventVirtualMethod(Event it) '''
-		virtual void «name»() = 0;
-	'''
 
 }

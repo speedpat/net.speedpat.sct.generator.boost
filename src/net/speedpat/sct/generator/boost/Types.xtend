@@ -42,6 +42,9 @@ class Types {
 		#ifndef «debugTypeModule.define»_H_
 		#define «debugTypeModule.define»_H_
 		
+		#include <typeinfo>
+		#include <cxxabi.h>
+
 		namespace debug
 		{
 			template <typename Type>

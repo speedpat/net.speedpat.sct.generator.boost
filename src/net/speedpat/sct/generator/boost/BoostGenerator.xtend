@@ -14,6 +14,7 @@ class BoostGenerator implements IExecutionFlowGenerator {
 	@Inject extension States
 	@Inject extension StatemachineInterface
 	@Inject extension StatemachineHeader
+	@Inject extension StatemachineImplementation
 
 	override generate(ExecutionFlow flow, GeneratorEntry entry, IFileSystemAccess fsa) {
 		flow.generateTypesHpp(flow.sourceElement as Statechart, fsa, entry)
@@ -21,6 +22,7 @@ class BoostGenerator implements IExecutionFlowGenerator {
 		flow.generateStatesHpp(flow.sourceElement as Statechart, fsa, entry)
 		flow.generateStatemachineInterfaceHpp(flow.sourceElement as Statechart, fsa, entry)
 		flow.generateStatemachineHeaderHpp(flow.sourceElement as Statechart, fsa, entry)
+		flow.generateStatemachineImplementationCpp(flow.sourceElement as Statechart, fsa, entry)
 
 	}
 
